@@ -35,3 +35,7 @@
    margin: auto;
    width: 100%;
  }
+
+
+ /*_________AUTH_______*/
+ @import url("./styles/auth.css");
