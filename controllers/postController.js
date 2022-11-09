@@ -88,6 +88,38 @@ const PostController = {
         } catch (error) {
             next(error)
         }
-    }
+    },
+
+    async likePost (req, res, next) {
+        try {
+            
+            const post = await PostMessage.find({_id: id, likes: req.user._id})
+             if (post.length> 0)
+             res.send({message: "like this post"})
+             const like = await PostMessage.findByIdAndUpdate({_id: id}, {$push: {likes: req.user._id},},{new: true})
+
+             if(!like) return res.send({message: "Post does not exist"})
+              res.send({message: "Liked post"})
+        } catch (error) {
+            res.send({message: error.message})
+            
+        }
+    },
+    async unLikePost (req,res, next) {
+        try{
+    const like = await PostMessage.findOneAndUpdate({_id: id, likes:req.user._id}, {
+        $pull: {likes: req.user._id}
+    }, {new: true})
+
+    if(!like)  res.send({message: "This post does not exist."})
+
+    res.send({message: "UnLiked Post!"})
+
+} catch (error) {
+     res.send({message: error.message})
+}
+
+        
+    },
 }
 module.exports = PostController
