@@ -1,6 +1,24 @@
 const Posts = require('../models/postModel')
 
 const PostController = {
+    async getPosts (req, res, next) {
+        try {
+            const postsArr = await Posts.find(req.user._id).sort('-createdAt')
+            .populate({
+                path: "comments",
+                populate: {
+                    path: "user likes",
+                    select: "-password"
+                }
+            })
+            .populate("user likes","avatar name");
+
+            res.send({success: true, data: postsArr})
+        } catch (error) {
+            next(error)
+        }
+    },
+    
     async createPost (req, res, next) {
         try {
             if(!req.body.image){
@@ -20,7 +38,7 @@ const PostController = {
             const newPosts = new Posts(newPost)
             await newPosts.save()
 
-            res.send({status: true, data: newPosts})
+            res.send({success: true, data: newPosts})
 
         } catch (error) {
             next(error)
