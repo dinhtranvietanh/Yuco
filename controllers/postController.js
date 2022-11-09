@@ -84,10 +84,10 @@ const PostController = {
           
             await Posts.findOneAndDelete({_id: id, post: req.user._id});
         
-            res.send({ message: "Post deleted successfully." });
-        } catch (err) {
-            next(err)
+            res.send({ success: true, message: "Post deleted successfully." });
+        } catch (error) {
+            next(error)
         }
     }
 }
-exports.module = PostController
+module.exports = PostController
