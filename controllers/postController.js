@@ -43,6 +43,51 @@ const PostController = {
         } catch (error) {
             next(error)
         }
+    },
+    async updatePost (req, res, next) {
+        try {
+            const ObjectId = require('mongoose').Types.ObjectId
+            const {id} = req.params
+
+            const new_data = {
+                title: req.body.title, 
+                message: req.body.message, 
+                creator: req.body.creator, 
+                images: req.body.images, 
+                _id: id
+            }
+
+            if (!ObjectId.isValid(id)){
+                throw new Error(`Can't find posts with id: ${id} `)
+            }
+
+            await Posts.findByIdAndUpdate(id, new_data)
+            .populate("user likes", "avatar name")
+            .populate({
+                path: "comment",
+                populate: {
+                    path: "user likes",
+                    select: "comment"
+                }
+            })
+
+            res.send({success: true, data: new_data})
+
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    async deletePost (req, res, next) {
+        try {
+            const {id} = req.params
+          
+            await Posts.findOneAndDelete({_id: id, post: req.user._id});
+        
+            res.send({ message: "Post deleted successfully." });
+        } catch (err) {
+            next(err)
+        }
     }
 }
 exports.module = PostController
