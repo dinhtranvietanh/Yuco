@@ -39,3 +39,4 @@
 
  /*_________AUTH_______*/
  @import url("./styles/auth.css");
+ @import 'antd/dist/antd.css'
