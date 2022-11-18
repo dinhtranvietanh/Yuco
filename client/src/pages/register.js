@@ -6,7 +6,8 @@ const Register = () => {
     <Layout
       style={{
         backgroundColor: "",
-        marginTop: "50px",
+        marginTop: "100px",
+        marginLeft: "150px",
         borderRadius: 10,
         boxShadow: "2px 2px 2px 0",
       }}

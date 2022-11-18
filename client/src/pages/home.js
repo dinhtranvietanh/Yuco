@@ -1,12 +1,18 @@
+import { Col, Row } from 'antd'
 import React from 'react'
+import { SideBar } from '../components/sideBar'
 
 const Home = () => {
     return (
-        <div>
-            <h1>
-                Home
-            </h1>
-        </div>
+        <Row>
+            <Col span={4}>
+                <SideBar/>
+            </Col>
+
+            <Col span={20}>
+            
+            </Col>
+        </Row>
     )
 }
 
