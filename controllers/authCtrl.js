@@ -140,7 +140,37 @@ const authCtrl = {
 
   forgetPassword: async (req, res) => {
     try {
-    } catch (error) {}
+
+
+        const {email} = req.body
+    const user = await Users.findOne({email})
+    if(!user) res.send({message:"email does not exist"})
+    const access_token = createAccessToken({id: user._id})
+    const url = `${CLIENT_URL}/api/reset/${access_token}`
+
+      sendMail(email, url, "new password")
+
+      res.send({msg: "check email!"})
+    } catch (error) {
+       res.send({message: err.message})
+    }
+  },
+
+resetPassword: async (req, res) => {
+    try {
+      const {password} = req.body
+      console.log(password)
+
+      const passwordHash = await bcrypt.hash(password, 12)
+
+      await Users.findOneAndUpdate({_id: req.user.id}, {
+          password: passwordHash
+      })
+
+      res.send({message: "Password changed!"})
+    } catch (error) {
+       res.send({message: err.message})
+    }
   },
 };
 
