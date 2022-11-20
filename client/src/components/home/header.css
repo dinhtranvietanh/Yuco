@@ -7,3 +7,32 @@
 .button-header :hover {
     background-color: #ffe600 !important;
 }
+.footer {
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: #fff896;
+  width: 100%
+}
+.f-content {
+  background-color: #000000;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  gap: 2rem;
+  color: white;
+  font-weight: bold;
+}
+.f-icons {
+  display: flex;
+  gap: 2rem;
+}
+
+@media screen and (max-width: 768px){
+  .f-content{
+    transform: scale(.5);
+  }
+}

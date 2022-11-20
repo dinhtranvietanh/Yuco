@@ -1,13 +1,13 @@
 import { Affix, Button, Col, Row } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-const Header = () => {
-    const {auth} = useSelector((state) => state)
-    console.log(auth)
+const Header = ({loadingAbout, loadingInfo , setLoadingInfo, setLoadingAbout}) => {
+
+
   return (
-    <Affix offsetTop={0} className="main-nav">
-      <Row>
+    <Affix offsetTop={0} style={{width: '100%'}} >
+      <Row className="main-nav">
         <Col className="button-header" span={8}>
           <div style={{textAlign: 'center'}}>
             <span style={{ fontSize: 24, color: "black", fontWeight: "bold" }}>
@@ -16,14 +16,14 @@ const Header = () => {
           </div>
         </Col>
         <Col className="button-header" span={8}>
-          <div style={{textAlign: 'center'}}>
+          <div onClick={() => setLoadingInfo(!loadingInfo)} style={{textAlign: 'center'}}>
             <span style={{ fontSize: 24, color: "black", fontWeight: "bold" }}>
               Information
             </span>
           </div>
         </Col>
         <Col className="button-header" span={8}>
-          <div style={{textAlign: 'center'}}>
+          <div onClick={() => setLoadingAbout(!loadingAbout)} style={{textAlign: 'center'}}>
             <span style={{ fontSize: 24, color: "black", fontWeight: "bold" }}>
               About
             </span>

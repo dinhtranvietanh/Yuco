@@ -1,24 +1,23 @@
-import { Col, Row } from 'antd'
-import React from 'react'
-import Header from '../components/home/header'
-import { SideBar } from '../components/sideBar'
-
+import { Col, Layout, Row } from "antd";
+import React, { useState } from "react";
+import Footer from "../components/home/footer";
+import Header from "../components/home/header";
+import Information from "../components/home/Information";
+import Welcome from "../components/home/welcome";
+import { SideBar } from "../components/sideBar";
 
 const Home = () => {
-    return (
-        <div>
-        <Row gutter={[3,0]}>
-            <Col>
-                <SideBar/>
-            </Col>
+    const [loadingInfo, setLoadingInfo] = useState(false)
+    const [loadingAbout, setLoadingAbout] = useState(false)
+  return (
+    <Layout>
+          <Header loadingInfo={loadingInfo} loadingAbout={loadingAbout} setLoadingInfo={setLoadingInfo} setLoadingAbout={setLoadingAbout} />
+          <Welcome />
+          <Information loadingInfo={loadingInfo} />
+          <Footer loadingAbout={loadingAbout}/>
 
-            <Col flex={24}>
-                <Header/>
-            </Col>
-        </Row>
-        </div>
+    </Layout>
+  );
+};
 
-    )
-}
-
-export default Home
+export default Home;
