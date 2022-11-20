@@ -91,9 +91,9 @@ const PostController = {
 
   async likePost(req, res, next) {
     try {
-      const post = await PostMessage.find({ _id: id, likes: req.user._id });
+      const post = await Posts.find({ _id: id, likes: req.user._id });
       if (post.length > 0) res.send({ message: "like this post" });
-      const like = await PostMessage.findByIdAndUpdate(
+      const like = await Posts.findByIdAndUpdate(
         { _id: id },
         { $push: { likes: req.user._id } },
         { new: true }
@@ -102,12 +102,12 @@ const PostController = {
       if (!like) return res.send({ message: "Post does not exist" });
       res.send({ message: "Liked post" });
     } catch (error) {
-      res.send({ message: error.message });
+      next(error);
     }
   },
   async unLikePost(req, res, next) {
     try {
-      const like = await PostMessage.findOneAndUpdate(
+      const like = await Posts.findOneAndUpdate(
         { _id: id, likes: req.user._id },
         {
           $pull: { likes: req.user._id },
@@ -119,7 +119,39 @@ const PostController = {
 
       res.send({ message: "UnLiked Post!" });
     } catch (error) {
-      res.send({ message: error.message });
+      next(error);
+    }
+  },
+
+  getDetailPost: async (req, res, next) => {
+    try {
+      const getDetailPost = await Posts.findById(req.params.id)
+        .populate("user", "avatar username")
+        .populate({
+          path: "comments",
+          populate: {
+            path: "user",
+            select: "-password",
+          },
+        });
+
+      res.send({ getDetailPost });
+    } catch (err) {
+      next(err);
+    }
+  },
+  getUserPost: async (req, res, next) => {
+    try {
+      const userPost = await Posts.find({ user: req.params.id }).sort(
+        "-createdAt"
+      );
+
+      res.send({
+        userPost,
+        result: userPost.length,
+      });
+    } catch (err) {
+      next(err)
     }
   },
 };

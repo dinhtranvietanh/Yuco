@@ -2,9 +2,6 @@ const mongoose = require('mongoose')
 const { likePost } = require('../controllers/postController')
 
 const comment_schema = new mongoose.Schema({
-
-
-
     content: {
         type: String, require: true
     
