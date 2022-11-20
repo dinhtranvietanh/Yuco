@@ -31,7 +31,6 @@
  }
 
  .main {
-   max-width: 1000px;
    /* margin: auto; */
    width: 100%;
  }
@@ -39,4 +38,5 @@
 
  /*_________AUTH_______*/
  @import url("./styles/auth.css");
+ @import url("./components/home/header.css");
  @import 'antd/dist/antd.css'

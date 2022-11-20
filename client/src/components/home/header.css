@@ -1,0 +1,9 @@
+.main-nav {
+    width: 100%;
+    top: 0;
+    height: 5rem;
+    background: repeating-linear-gradient(#ffe600, #fffd81 49.9%, #fff896 50.1%, #fffffa 100%);
+  }
+.button-header :hover {
+    background-color: #ffe600 !important;
+}

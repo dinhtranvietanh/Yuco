@@ -7,8 +7,16 @@ import {
   Routes
 
 } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { refreshToken } from './redux/actions/authAction';
 
 function App() {
+  const dispatch = useDispatch()
+  const {auth} = useSelector(state => state)
+  useEffect(() => {
+    dispatch(refreshToken())
+},[dispatch])
   return (
     <Router>
       <input type="checkbox" id="theme" />
@@ -17,7 +25,7 @@ function App() {
 
           <Routes>
 
-            <Route exact path="/" element={<Login />} />
+          <Route exact path="/" element={auth.token ? <Home /> : <Login />} />
 
             <Route exact path="/:page" element={<PageRender />} />
 
