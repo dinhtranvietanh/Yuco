@@ -17,7 +17,7 @@ const StatusForm = () => {
         <div
           style={{ textAlign: "center", fontWeight: "bold", marginBottom: 10 }}
         >
-          Hello, What thing you wanna share!
+          Hi duelist! What you wanna share?
         </div>
         <div style={{ textAlign: "center" }}>
           <Button

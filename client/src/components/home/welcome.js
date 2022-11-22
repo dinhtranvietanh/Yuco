@@ -14,7 +14,7 @@ const Welcome = () => {
     >
       <Row>
         <Col span={12}>
-          <h1>HELLO I'm YUCO app, your Welcome!</h1>
+          <h1>Welcome to Yuco!</h1>
           <small>
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text

@@ -6,7 +6,7 @@ import React from 'react'
 const Form = ({status, setStatus}) => {
 
     const handleSubmitForm = () => {
-        
+
     }
   return (
     <Modal 
@@ -16,7 +16,7 @@ const Form = ({status, setStatus}) => {
         footer={[
             <Row justify="">
                 <Col offset={15}>
-                    <Button style={{marginRight: 15, color: 'yellow',background:'black',borderRadius: 10}}>Submit</Button>
+                    <Button style={{marginRight: 15, color: 'yellow',background:'black',borderRadius: 10}}>Upload</Button>
                 </Col>
                 <Col>
                     <Button style={{borderRadius: 10}} onClick={() => setStatus(false)}>Cancel</Button>
