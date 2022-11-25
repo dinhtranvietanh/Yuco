@@ -3,6 +3,7 @@
 import {APPTYPES} from './appTypes'
 import { postDataAPI, getDataAPI, patchDataAPI, deleteDataAPI  } from '../../utils/fetchData'
 import {uploadImage} from '../../utils/uploadImage'
+import { notification } from 'antd';
 
 export const POST_TYPES = {
   CREATE_POST: "CREATE_POST",
@@ -15,28 +16,26 @@ export const POST_TYPES = {
 export const getPosts = (auth) => async (dispatch) => {
   try {
     const {data} = await getDataAPI('getPosts', auth.token)
-    dispatch({ type: APPTYPES.FETCH_ALL, payload: data });
+    dispatch({ type: POST_TYPES.GET_POSTS, payload: data });
   } catch (error) {
     dispatch({
-      type: APPTYPES.ALERT,
+      type: APPTYPES.NOTIFY,
       payload: {error: error.response.data.msg}
-  })  }
+  })  
+}
 };
 
 export const createPost = ({ post,images, auth}) => async (dispatch) => {
   let media = []
   try {
-    dispatch({ type: APPTYPES.ALERT, payload: {loading: true} })
+    dispatch({ type: APPTYPES.NOTIFY, payload: {loading: true} })
     if(images.length> 0) media = await uploadImage(images)
-    const { data } = await postDataAPI('createPost', {...post,images: media}, auth.token);
-    dispatch({ type: APPTYPES.CREATE, payload: data });
-    dispatch({ type: APPTYPES.ALERT, payload: {loading: false} })
+    const data = await postDataAPI('createPost', {...post,images: media}, auth.token);
+    dispatch({ type: POST_TYPES.CREATE, payload: data });
+    dispatch({ type: APPTYPES.NOTIFY, payload: {loading: false} })
 
   } catch (error) {
-    dispatch({
-      type: APPTYPES.ALERT,
-      payload: {error: error.response.data.msg}
-  })
+    notification.error({message: error})
   }
 }
 export const updatePost = ({postData, images, authReducer, statusReducer}) => async (dispatch) => {
@@ -102,7 +101,7 @@ export const getPost = ({detailPostReducer, id, authReducer}) => async (dispatch
 
       } catch (err) {
           dispatch({
-              type: AP.NOTIFY,
+              type: APPTYPES.NOTIFY,
               payload: {
                   error: err.response.data.msg
               } 

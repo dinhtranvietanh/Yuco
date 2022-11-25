@@ -21,8 +21,10 @@ const PostController = {
   },
 
   async createPost(req, res, next) {
+    console.log(req.body)
     try {
-      if (!req.body.image) {
+      console.log(req.body)
+      if (!req.body.images) {
         throw new Error("Please input your image");
       }
       if (!req.body.title) {
@@ -31,11 +33,13 @@ const PostController = {
 
       let newPost = {
         title: req.body.title,
-        images: req.body.image,
+        images: req.body.images,
         message: req.body.message,
-        creator: req.user.name,
+        creator: req.user.id,
         userId: req.user.id,
       };
+      console.log(newPost)
+
       const newPosts = new Posts(newPost);
       await newPosts.save();
 

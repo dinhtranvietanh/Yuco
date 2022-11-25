@@ -8,7 +8,6 @@ const post_schema = new mongoose.Schema({
     },
     message: {        
         type: String,
-        required: true,
     },
     creator: String,
     userId: String,
