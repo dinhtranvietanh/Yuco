@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { showImage, showVideo } from "../../../utils/media";
 import { DeleteOutlined, FileImageOutlined } from "@ant-design/icons";
 import "./style-form.css";
-import { createPost } from "../../../redux/actions/postAction";
+import { createPost, getPosts } from "../../../redux/actions/postAction";
 
 const Form = ({ status, setStatus }) => {
   const { auth } = useSelector((state) => state);
@@ -66,6 +66,9 @@ const Form = ({ status, setStatus }) => {
     }
 
     dispatch(createPost({ post, images, auth }));
+    notification.success({message: 'Create Success!'})
+    setStatus(false)
+
   };
   return (
     <Modal

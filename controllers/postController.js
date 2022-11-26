@@ -3,8 +3,9 @@ const Posts = require("../models/postModel");
 const PostController = {
   async getPosts(req, res, next) {
     try {
-      const postsArr = await Posts.find(req.user._id)
+      const postsArr = await Posts.find()
         .sort("-createdAt")
+        .populate("user", "avatar username")
         .populate({
           path: "comments",
           populate: {
@@ -12,8 +13,7 @@ const PostController = {
             select: "-password",
           },
         })
-        .populate("user likes", "avatar name");
-
+        console.log(postsArr)
       res.send({ success: true, data: postsArr });
     } catch (error) {
       next(error);
@@ -21,9 +21,7 @@ const PostController = {
   },
 
   async createPost(req, res, next) {
-    console.log(req.body)
     try {
-      console.log(req.body)
       if (!req.body.images) {
         throw new Error("Please input your image");
       }
@@ -35,10 +33,10 @@ const PostController = {
         title: req.body.title,
         images: req.body.images,
         message: req.body.message,
-        creator: req.user.id,
+        creator: req.user.username,
         userId: req.user.id,
+        tags: req.user.tags
       };
-      console.log(newPost)
 
       const newPosts = new Posts(newPost);
       await newPosts.save();
@@ -58,6 +56,7 @@ const PostController = {
         message: req.body.message,
         creator: req.body.creator,
         images: req.body.images,
+        tags: req.body.tags,
         _id: id,
       };
 
@@ -65,17 +64,20 @@ const PostController = {
         throw new Error(`Can't find posts with id: ${id} `);
       }
 
-      await Posts.findByIdAndUpdate(id, new_data)
+      const updatePost = await Posts.findByIdAndUpdate(id, new_data)
         .populate("user likes", "avatar name")
-        .populate({
-          path: "comment",
-          populate: {
-            path: "user likes",
-            select: "comment",
-          },
-        });
+        // .populate({
+        //   path: "comment",
+        //   populate: {
+        //     path: "user likes",
+        //     select: "comment",
+        //   },
+        // });
 
-      res.send({ success: true, data: new_data });
+      res.send({ success: true, updatePost: {
+        ...updatePost._doc,
+        ...new_data
+    } });
     } catch (error) {
       next(error);
     }
@@ -147,7 +149,7 @@ const PostController = {
   getUserPost: async (req, res, next) => {
     try {
       const userPost = await Posts.find({ user: req.params.id }).sort(
-        "-createdAt"
+        "-createAt"
       );
 
       res.send({

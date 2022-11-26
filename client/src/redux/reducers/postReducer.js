@@ -4,8 +4,6 @@ import {EditData, DeleteData} from '../actions/appTypes'
 const initialState = {
     loading: false,
     posts: [],
-    page: 2,
-    result: 0,
 }
 
 const postReducer = (state = initialState, action) => {
@@ -13,9 +11,7 @@ const postReducer = (state = initialState, action) => {
         case POST_TYPES.GET_POSTS:
             return {
                 ...state,
-                posts: action.payload.posts,
-                result: action.payload.result,
-                page: action.payload.page,
+                posts: action.payload.data,
             };
         case POST_TYPES.CREATE_POST:
 			return {

@@ -28,33 +28,33 @@ export const getPosts = (auth) => async (dispatch) => {
 export const createPost = ({ post,images, auth}) => async (dispatch) => {
   let media = []
   try {
-    dispatch({ type: APPTYPES.NOTIFY, payload: {loading: true} })
     if(images.length> 0) media = await uploadImage(images)
-    const data = await postDataAPI('createPost', {...post,images: media}, auth.token);
-    dispatch({ type: POST_TYPES.CREATE, payload: data });
-    dispatch({ type: APPTYPES.NOTIFY, payload: {loading: false} })
+    const res = await postDataAPI('createPost', {...post, images: media}, auth.token);
+    dispatch({ type: POST_TYPES.CREATE_POST, payload: res.data.data });
 
-  } catch (error) {
-    notification.error({message: error})
+  } catch (err) {
+    console.log(err)
   }
 }
-export const updatePost = ({postData, images, authReducer, statusReducer}) => async (dispatch) => {
+export const updatePost = ({postData, images, auth, post}) => async (dispatch) => {
   let media = []
   
   const imgNewUrl = images.filter(img => !img.url)
   const imgOldUrl = images.filter(img => img.url)
 
-  if(statusReducer.title === postData.title
+  console.log(postData, post)
+
+  if(post.title === postData.title
      && imgNewUrl.length === 0
-     && imgOldUrl.length === statusReducer.images.length 
+     && imgOldUrl.length === post.images.length 
   ) 
   return;
 
   try {
       if(imgNewUrl.length > 0) media = await uploadImage(imgNewUrl)
 
-      const res = await patchDataAPI(`post/${statusReducer._id}`,{
-          ...postData, images: [...imgOldUrl,...media]}, authReducer.token);
+      const res = await patchDataAPI(`updatePost/${post._id}`,{
+          ...postData, images: [...imgOldUrl,...media]}, auth.token);
       
       dispatch({ 
           type: POST_TYPES.UPDATE_POST, 
@@ -77,11 +77,11 @@ export const updatePost = ({postData, images, authReducer, statusReducer}) => as
   }
 }
 
-export const deletePost = ({post, authReducer}) => async (dispatch) => {
+export const deletePost = ({post, auth}) => async (dispatch) => {
   dispatch({type: POST_TYPES.DELETE_POST, payload: post})
   try {
       
-      deleteDataAPI(`post/${post._id}`, authReducer.token)
+      deleteDataAPI(`deletePost/${post._id}`, auth.token)
 
   } catch (err) {
       dispatch({ 
@@ -93,10 +93,10 @@ export const deletePost = ({post, authReducer}) => async (dispatch) => {
   }
 }
 
-export const getPost = ({detailPostReducer, id, authReducer}) => async (dispatch) => {
+export const getPost = ({detailPostReducer, id, auth}) => async (dispatch) => {
   if(detailPostReducer.every(post => post._id !== id)){
       try {
-          const res = await getDataAPI(`post/${id}`, authReducer.token)
+          const res = await getDataAPI(`getPost/${id}`, auth.token)
           dispatch({ type: POST_TYPES.GET_POST, payload: res.data.getDetailPost})
 
       } catch (err) {

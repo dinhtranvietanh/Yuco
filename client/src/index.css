@@ -38,6 +38,8 @@
 
  /*_________AUTH_______*/
  @import url("./styles/auth.css");
+ @import url("./pages/post-page/posts.css");
+ @import url("./pages/post-page/items//item.css");
  @import url("./components/home/header.css");
  @import url("./pages/post-page/form-post/style-form.css");
  @import 'antd/dist/antd.css'
