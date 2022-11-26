@@ -111,3 +111,36 @@ export const getPost = ({detailPostReducer, id, auth}) => async (dispatch) => {
   
 }
 
+export const likePost = ({auth, post}) => async (dispatch) => {
+  const newPost = {...post, likes: [...post.likes, auth.user]}
+  dispatch({ type: POST_TYPES.UPDATE_POST, payload: newPost})
+
+  try {
+    await patchDataAPI(`updatePost/${post._id}/like`, null , auth.token);
+
+  } catch (err) {
+    dispatch({
+      type: APPTYPES.NOTIFY,
+      payload: {
+          error: err.response.data.msg
+      } 
+  })}
+};
+
+export const unLikePost = ({auth, post}) => async (dispatch) => {
+  const newPost = {...post, likes: post.likes.filter(like => like._id !== auth.user._id )}
+  dispatch({ type: POST_TYPES.UPDATE_POST, payload: newPost})
+
+  try {
+    await patchDataAPI(`updatePost/${post._id}/unlike`, null, auth.token);
+
+  } catch (err) {
+    dispatch({
+      type: APPTYPES.NOTIFY,
+      payload: {
+          error: err.response.data.msg
+      } 
+  })}
+};
+
+
