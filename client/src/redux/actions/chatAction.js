@@ -19,7 +19,7 @@ export const getInfoUser = ({user, chatReducer}) => (dispatch) => {
         })
     }
 } 
-export const createChat = ({message, authReducer, socketReducer}) => async (dispatch) => {
+export const createChat = ({message, auth, socketReducer}) => async (dispatch) => {
     dispatch({
         type: CHAT_TYPES.CREATE_CHAT,
         payload: message
@@ -28,7 +28,7 @@ export const createChat = ({message, authReducer, socketReducer}) => async (disp
     socketReducer.emit("createChat", {...message})
     
     try {
-        await postDataAPI('chat', message, authReducer.token)
+        await postDataAPI('chat', message, auth.token)
 
     } catch (err) {
         dispatch({
@@ -39,15 +39,15 @@ export const createChat = ({message, authReducer, socketReducer}) => async (disp
         })
     }
 }
-export const getUserConversation = ({authReducer}) => async (dispatch) => {
+export const getUserConversation = ({auth}) => async (dispatch) => {
     try {
-        const res = await getDataAPI('conversation', authReducer.token)
+        const res = await getDataAPI('conversation', auth.token)
 
         let newArr = [];
 
         res.data.conversation.forEach(item => {
             item.recipients.forEach(info => {
-                if(info._id !== authReducer.userCurrent._id){
+                if(info._id !== auth.user._id){
                     newArr.push({...info, text: item.text})
                 }
             })
@@ -67,9 +67,9 @@ export const getUserConversation = ({authReducer}) => async (dispatch) => {
         })
     }
 }
-export const getChat = ({authReducer, id, page = 1}) => async (dispatch) => {
+export const getChat = ({auth, id, page = 1}) => async (dispatch) => {
     try {
-        const res = await getDataAPI(`chat/${id}?limit=${page * 9}`, authReducer.token)
+        const res = await getDataAPI(`chat/${id}?limit=${page * 9}`, auth.token)
         dispatch({
             type: CHAT_TYPES.GET_CHAT, 
             payload: res.data
@@ -84,7 +84,7 @@ export const getChat = ({authReducer, id, page = 1}) => async (dispatch) => {
         })
     }
 }
-export const deleteChat = ({msg, authReducer, chatReducer}) => async (dispatch) => {
+export const deleteChat = ({msg, auth, chatReducer}) => async (dispatch) => {
     const newData = DeleteData(chatReducer.data, msg._id)
     // console.log(newData)
     dispatch({
@@ -92,7 +92,7 @@ export const deleteChat = ({msg, authReducer, chatReducer}) => async (dispatch) 
         payload: {newData, _id: msg.recipient}}) 
     
     try {
-        await deleteDataAPI(`chat/${msg._id}`, authReducer.token)
+        await deleteDataAPI(`chat/${msg._id}`, auth.token)
     } catch (err) {
         dispatch({
             type: APPTYPES.NOTIFY, 
@@ -102,13 +102,13 @@ export const deleteChat = ({msg, authReducer, chatReducer}) => async (dispatch) 
         })
     }
 }
-export const deleteConversation = ({authReducer, id}) => async (dispatch) => {
+export const deleteConversation = ({auth, id}) => async (dispatch) => {
     dispatch({
         type: CHAT_TYPES.DELETE_CONVERSATION,
         payload: id
     })
     try {
-        await deleteDataAPI(`conversation/${id}`, authReducer.token)
+        await deleteDataAPI(`conversation/${id}`, auth.token)
     } catch (err) {
         dispatch({
             type: APPTYPES.NOTIFY, 

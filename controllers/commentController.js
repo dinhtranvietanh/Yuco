@@ -5,7 +5,8 @@ const Posts = require("../models/postModel");
 const commentCtrl = {
   createComment: async (req, res) => {
     try {
-      const { postId, content, reply, postUserId } = req.body;
+      const { postId, content } = req.body;
+      console.log(req.body)
 
       const post = await Posts.findById(postId);
       if (!post) res.send(message);
@@ -13,8 +14,6 @@ const commentCtrl = {
       const newComment = new Comment({
         user: req.user._id,
         content,
-        reply,
-        postUserId,
         postId,
       });
       await Posts.findOneAndUpdate(

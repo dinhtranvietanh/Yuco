@@ -1,0 +1,44 @@
+.commentInput{
+    display: flex;
+    align-items: center;
+    border-radius: 22px;
+}
+
+.commentInput input{
+    border: none;
+    outline: none;
+    background: #f7f7f7;
+    flex: 1;
+    overflow: auto;
+}
+
+.commentInput .postBtn {
+    border: none;
+    outline: none;
+    background: #f7f7f7;
+    font-weight: 500;
+}
+/*----------------Comments------------------*/
+.commentItem{
+    padding: 10px 20px
+}
+
+
+.commentItem .commentContent{
+    background: rgb(221, 221, 221);
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.commentItem .commentMenu .nav-item{
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    margin: auto 60px auto;
+}
+
+.commentItem .commentContent textarea{
+    width: 100%;
+    border: none;
+    outline: none;
+}

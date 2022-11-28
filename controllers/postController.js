@@ -13,7 +13,6 @@ const PostController = {
             select: "-password",
           },
         })
-        console.log(postsArr)
       res.send({ success: true, data: postsArr });
     } catch (error) {
       next(error);
@@ -97,6 +96,8 @@ const PostController = {
 
   async likePost(req, res, next) {
     try {
+      const { id } = req.params;
+
       const post = await Posts.find({ _id: id, likes: req.user._id });
       if (post.length > 0) res.send({ message: "like this post" });
       const like = await Posts.findByIdAndUpdate(
@@ -113,8 +114,11 @@ const PostController = {
   },
   async unLikePost(req, res, next) {
     try {
+      const { id } = req.params;
+
+      console.log(id)
       const like = await Posts.findOneAndUpdate(
-        { _id: id, likes: req.user._id },
+        { _id: id },
         {
           $pull: { likes: req.user._id },
         },

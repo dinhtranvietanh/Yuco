@@ -3,8 +3,6 @@ import { useSelector, useDispatch} from "react-redux";
 import PostItem from './items/postItem'
 const Posts = () => {
     const {post} = useSelector(state => state)
-
-    console.log(post)
   return (
     <div style={{overflowY: 'scroll', height: '550px', marginTop: '20px'}}>
     <div className="postList-wrap">

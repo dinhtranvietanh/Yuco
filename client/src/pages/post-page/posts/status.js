@@ -8,7 +8,7 @@ import { APPTYPES } from '../../../redux/actions/appTypes';
 import {deletePost} from '../../../redux/actions/postAction'
 
 const StatusItem = ({post}) => {
-  const {authReducer} = useSelector(state => state)
+  const {auth} = useSelector(state => state)
   const dispatch = useDispatch()
 
   const handleEditPost = () => {
@@ -17,7 +17,7 @@ const StatusItem = ({post}) => {
 
   const handleDeletePost = () => {
     if(window.confirm('Do you really want to delete post ?'))
-      dispatch(deletePost({post, authReducer}))
+      dispatch(deletePost({post, auth}))
   }
 
   return (
@@ -34,7 +34,7 @@ const StatusItem = ({post}) => {
 
             <div className='nav-item dropdown'>
               {
-                (authReducer.userCurrent._id === post.user._id || authReducer.userCurrent.role === 1)  &&
+                (auth.user._id === post.user._id || auth.auth.role === 1)  &&
                   <>
 
                     <span className="material-icons" id="moreLink" data-toggle="dropdown">

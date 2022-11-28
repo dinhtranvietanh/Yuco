@@ -1,5 +1,4 @@
 
-
 import {APPTYPES} from './appTypes'
 import { postDataAPI, getDataAPI, patchDataAPI, deleteDataAPI  } from '../../utils/fetchData'
 import {uploadImage} from '../../utils/uploadImage'
@@ -93,12 +92,11 @@ export const deletePost = ({post, auth}) => async (dispatch) => {
   }
 }
 
-export const getPost = ({detailPostReducer, id, auth}) => async (dispatch) => {
-  if(detailPostReducer.every(post => post._id !== id)){
+export const getPost = ({detailPost, id, auth}) => async (dispatch) => {
+  if(detailPost.every(post => post._id !== id)){
       try {
           const res = await getDataAPI(`getPost/${id}`, auth.token)
           dispatch({ type: POST_TYPES.GET_POST, payload: res.data.getDetailPost})
-
       } catch (err) {
           dispatch({
               type: APPTYPES.NOTIFY,

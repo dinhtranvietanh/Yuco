@@ -16,7 +16,6 @@ import {
   import { updatePost } from "../../../redux/actions/postAction";
   
   const EditPost = ({ post}) => {
-    console.log(post)
     const { auth } = useSelector((state) => state);
     const [status, setStatus] = useState(false)
     const dispatch = useDispatch();
