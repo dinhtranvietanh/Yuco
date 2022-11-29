@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, Form, Row, Col, Button, Layout, Input } from "antd";
+import { Link } from "react-router-dom";
+import { register } from "../redux/actions/authAction";
+import { useDispatch } from "react-redux";
 const Register = () => {
-  // ./mill-eye-icon.png
+  const dispatch = useDispatch()
+
+  const [email, setEmail] = useState('')
+  const [pass, setPass] = useState('')
+  const [rePass, setRePass] = useState('')
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    let data = {
+      email: email,
+      password: pass,
+      confirmpassword: rePass,
+    }
+    dispatch(register(data))
+}
+
   return (
     <Layout
       style={{
@@ -24,20 +42,22 @@ const Register = () => {
         <Col span={14}>
           <Card style={{ margin: 10 }} title={<h1>REGISTER ACCOUNT</h1>}>
             <div style={{marginTop: 15}}>Email:</div>
-            <Input />
+            <Input onChange={(e) => setEmail(e.target.value)}  />
 
             <div style={{marginTop: 15}}>Password:</div>
-            <Input/>
+            <Input.Password onChange={(e) => setPass(e.target.value)} />
 
             <div style={{marginTop: 15}}>Re-Password:</div>
-            <Input/>
+            <Input.Password onChange={(e) => setRePass(e.target.value)}/>
 
             <Row gutter={[12,12]} style={{marginTop: 20}}>
                 <Col>
-                    <Button size='large' type='primary'>Register</Button>
+                    <Button onClick={handleSubmit} size='large' type='primary'>Register</Button>
                 </Col>
                 <Col>
-                    <Button size='large'>Login Now</Button>
+                  <Link to="/login">
+                    <Button path size='large'>Login Now</Button>
+                  </Link>
                 </Col>
                 <Col>
                     <span>Register account and join Yuco...</span>

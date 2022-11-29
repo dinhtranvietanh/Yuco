@@ -6,6 +6,8 @@ import {
   ProfileOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { logout } from "../redux/actions/authAction";
+import { useDispatch, useSelector } from "react-redux";
 
 const styleButton = {
   background: "black",
@@ -16,6 +18,8 @@ const styleButton = {
 };
 
 export const SideBar = () => {
+  const {auth} = useSelector(state => state)
+  const dispatch = useDispatch();
   return (
     <div style={{ height: "750px", width: "100%" }}>
       <Layout
@@ -70,7 +74,7 @@ export const SideBar = () => {
           </Row>
         </Link>
 
-        <Link to="/message">
+        <Link to="/chat">
           <Row style={styleButton}>
             <Col span={5}>
               <MessageOutlined
@@ -79,26 +83,37 @@ export const SideBar = () => {
             </Col>
             <Col span={18}>
               <Button type="text" style={{ height: 50, width: "100%" }}>
-                <span style={{ fontSize: 24, color: "yellow" }}>MESSAGE</span>
+                <span style={{ fontSize: 24, color: "yellow" }}>CHAT</span>
               </Button>
             </Col>
           </Row>
         </Link>
 
-        <Link to="/profile">
-        <Row style={styleButton}>
-          <Col span={5}>
-            <ProfileOutlined
-              style={{ fontSize: 30, marginTop: 12, marginLeft: 12 }}
-            />
-          </Col>
-          <Col span={18}>
-            <Button type="text" style={{ height: 50, width: "100%" }}>
-              <span style={{ fontSize: 24, color: "yellow" }}>PROFILE</span>
-            </Button>
-          </Col>
-        </Row>
+        <Link to={`/profile/${auth?.user?._id}`}>
+          <Row style={styleButton}>
+            <Col span={5}>
+              <ProfileOutlined
+                style={{ fontSize: 30, marginTop: 12, marginLeft: 12 }}
+              />
+            </Col>
+            <Col span={18}>
+              <Button type="text" style={{ height: 50, width: "100%" }}>
+                <span style={{ fontSize: 24, color: "yellow" }}>PROFILE</span>
+              </Button>
+            </Col>
+          </Row>
         </Link>
+        <Row style={styleButton}>
+
+        <Link
+          to="/"
+          onClick={() => dispatch(logout())}
+        >
+          <Button type="text" style={{ height: 50, width: "100%" }}>
+            <span style={{ fontSize: 24, color: "yellow" }}>LOGOUT</span>
+          </Button>
+        </Link>
+        </Row>
 
       </Layout>
     </div>

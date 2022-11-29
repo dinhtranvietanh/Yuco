@@ -15,7 +15,6 @@ const Home = () => {
           <Welcome />
           <Information loadingInfo={loadingInfo} />
           <Footer loadingAbout={loadingAbout}/>
-
     </Layout>
   );
 };

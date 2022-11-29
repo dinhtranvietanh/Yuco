@@ -2,7 +2,7 @@ export const APPTYPES = {
     AUTH: "AUTH",
     NOTIFY: "NOTIFY",
     STATUS: "STATUS",
-    
+    SOCKET: "SOCKET",
 }
 
 export const EditData = (data, id, post) => {

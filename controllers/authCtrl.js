@@ -15,16 +15,21 @@ const createRefreshToken = (payload) => {
 };
 
 const authCtrl = {
+  searchUser: async (req, res) => {
+    try {
+        const users = await Users.find({email: {$regex: req.query.username}})
+        .select("email fullname username avatar")
+        
+        res.json({users})
+    } catch (err) {
+        return res.status(500).json({msg: err.message})
+    }
+},
   register: async (req, res) => {
     try {
-      const { fullname, username, email, password, gender } = req.body;
+      const {email, password } = req.body;
 
-      let newUserName = username.toLowerCase().replace(/ /g, "");
-
-      const user_name = await Users.findOne({ username: newUserName });
-      if (user_name)
-        return res.status(400).json({ msg: "the name is already exist" });
-
+      console.log(req.body)
       const user_email = await Users.findOne({ email });
       if (user_email)
         return res.status(400).json({ msg: "the email is already exist" });
@@ -34,11 +39,11 @@ const authCtrl = {
       const passwordHash = await bcrypt.hash(password, 12);
 
       const newUser = new Users({
-        fullname,
-        username: newUserName,
+        fullname: '',
+        username: '',
         email,
         password: passwordHash,
-        gender,
+        gender: '',
       });
 
       const access_token = createAccessToken({ id: newUser._id });
