@@ -168,6 +168,17 @@ resetPassword: async (req, res) => {
        res.send({message: err.message})
     }
   },
+
+  getAuthUser: async (req, res , next) => {
+    try {
+      const auth_data = await Users.findById(req.params.id).select('-password')    
+      if(!auth_data) throw new Error(`User had not existed !`)  
+
+      res.send({auth_data})
+    } catch (error) {
+      next(error)
+    }
+  }
 };
 
 module.exports = authCtrl;

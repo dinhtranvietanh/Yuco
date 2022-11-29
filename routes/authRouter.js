@@ -7,4 +7,5 @@ router.post('/logout', authCtrl.logout)
 router.post('/refresh_token', authCtrl.generateAccessToken)
 router.post('/forget', authCtrl.forgetPassword)
 router.post('/reset', authCtrl.resetPassword)
+router.get('/user/:id', authCtrl.getAuthUser)
 module.exports = router

@@ -152,8 +152,9 @@ const PostController = {
   },
   getUserPost: async (req, res, next) => {
     try {
-      const userPost = await Posts.find({ user: req.params.id }).sort(
-        "-createAt"
+      console.log(req.params.id)
+      const userPost = await Posts.find({userId: req.params.id}).sort(
+        "-createdAt"
       );
 
       res.send({
