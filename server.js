@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const req = require('express/lib/request')
+const SocketServer = require('./socketserver')
 
 const app = express()
 app.use(express.json())
@@ -17,6 +18,12 @@ app.use('/api', require('./routes/commentRouter'))
 app.use('/api', require('./routes/chatRouter'))
 
 
+const http = require('http').createServer(app)
+const io = require('socket.io')(http)
+
+io.on('connection', socket => {
+  SocketServer(socket)
+})
 const URI = process.env.MONGODB_URL
 mongoose.connect(URI, {
 
